@@ -55,43 +55,43 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
                     <Label Content="Имя:" FontSize="18"/>
-                    <Label Content="{Binding CurrentAnimalName}"
+                    <Label Content="{Binding SelectedAnimalName}"
                            FontSize="18"
                            d:Content="Животинка"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
                     <Label Content="Цвет:" FontSize="18"/>
-                    <Label Content="{Binding CurrentAnimalColor}"
+                    <Label Content="{Binding SelectedAnimalColor}"
                            FontSize="18"
                            d:Content="Черный"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
                     <Label Content="Тип питания:" FontSize="18"/>
-                    <Label Content="{Binding CurrentAnimalNutrition}"
+                    <Label Content="{Binding SelectedAnimalNutrition}"
                            FontSize="18"
                            d:Content="Травоядное"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
                     <Label Content="Возраст:" FontSize="18"/>
-                    <Label Content="{Binding CurrentAnimalAge}"
+                    <Label Content="{Binding SelectedAnimalAge}"
                            FontSize="18"
                            d:Content="12"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
                     <Label Content="Вес:" FontSize="18"/>
-                    <Label Content="{Binding CurrentAnimalWeight}"
+                    <Label Content="{Binding SelectedAnimalWeight}"
                            FontSize="18"
                            d:Content="7"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
                     <Label Content="Ядовитость:" FontSize="18"/>
-                    <Label Content="{Binding CurrentAnimalPoisonous}"
+                    <Label Content="{Binding SelectedAnimalPoisonous}"
                            FontSize="18"
                            d:Content="Не ядовито"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
                     <Label Content="Длина хвоста:" FontSize="18"/>
-                    <Label Content="{Binding CurrentAnimalTail}"
+                    <Label Content="{Binding SelectedAnimalTail}"
                            FontSize="18"
                            d:Content="10"/>
                 </StackPanel>

@@ -16,7 +16,13 @@ namespace Igonin_Lab_6
     public bool CheckBind { get => checkBind; set => Set(ref checkBind, value); }
 
     private int selectedInx = 0;
-    public int SelectedInx { get => selectedInx; set => Set(ref selectedInx, value); }
+    public int SelectedInx { get => selectedInx; set => SelectedIndexChanged(value); }
+
+    private string selectedAnimalName = "";
+    public string SelectedAnimalName { get => selectedAnimalName; set => Set(ref  selectedAnimalName, value); }
+
+
+
 
     public IgoninForestVM() 
     {
@@ -35,6 +41,13 @@ namespace Igonin_Lab_6
     public void CheckBindCheck()
     { 
       CheckBind = !CheckBind;
+    }
+
+    public void SelectedIndexChanged(int selInx)
+    {
+      selectedInx = selInx;
+      SelectedAnimalName = Strings[selectedInx];
+
     }
   }
 }

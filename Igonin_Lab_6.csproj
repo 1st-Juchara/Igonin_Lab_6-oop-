@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Igonin_Lab_6-oop-\**" />
+    <EmbeddedResource Remove="Igonin_Lab_6-oop-\**" />
+    <None Remove="Igonin_Lab_6-oop-\**" />
+    <Page Remove="Igonin_Lab_6-oop-\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\IgoninForestDll\IgoninForestDll.vcxproj" />
   </ItemGroup>
 

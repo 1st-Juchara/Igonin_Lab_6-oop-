@@ -27,7 +27,7 @@ namespace Igonin_Lab_6
     public static extern void SetAge(IntPtr animal, int newAge);
 
     [DllImport("IgoninForestDll.dll")]
-    public static extern int GetParams(IntPtr animal);
+    public static extern int GetAge(IntPtr animal);
 
     [DllImport("IgoninForestDll.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr GetName(IntPtr animal);
@@ -44,7 +44,7 @@ namespace Igonin_Lab_6
       InitializeComponent();
       IntPtr an = Create();
       SetAge(an, 10);
-      int an_age = GetParams(an);
+      int an_age = GetAge(an);
 
       string new_name = "Ime4ko";
       SetName(an, new_name);
