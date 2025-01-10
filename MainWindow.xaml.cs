@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using static Igonin_Lab_6.IgoninForestVM;
 
 
 namespace Igonin_Lab_6
@@ -18,43 +21,140 @@ namespace Igonin_Lab_6
   /// </summary>
   public partial class MainWindow : Window
   {
-    IgoninForestVM forest = new IgoninForestVM();
+    IgoninForestVM forestVM = new IgoninForestVM();
+
     
-    [DllImport("IgoninForestDll.dll")]
-    public static extern IntPtr Create();
-
-    [DllImport("IgoninForestDll.dll")]
-    public static extern void SetAge(IntPtr animal, int newAge);
-
-    [DllImport("IgoninForestDll.dll")]
-    public static extern int GetAge(IntPtr animal);
-
-    [DllImport("IgoninForestDll.dll", CharSet = CharSet.Unicode)]
-    public static extern IntPtr GetName(IntPtr animal);
-
-    [DllImport("IgoninForestDll.dll", CharSet = CharSet.Unicode)]
-    public static extern void SetName(IntPtr animal, string newName);
-
-    [DllImport("IgoninForestDll.dll")]
-    public static extern void FreeMemory(IntPtr ptr);
 
     public MainWindow()
     {
-      DataContext = forest;
+      DataContext = forestVM;
       InitializeComponent();
-      IntPtr an = Create();
-      SetAge(an, 10);
-      int an_age = GetAge(an);
 
-      string new_name = "Ime4ko";
-      SetName(an, new_name);
-      IntPtr ptr = GetName(an);
-      string an_name = Marshal.PtrToStringUni(ptr);
+      //IntPtr forest = IgoninForestVM.Create();
+      //AnimalStruct an = new AnimalStruct();
+      //an.Name = "Живот1";
+      //an.Color = "";
+      //an.ColorInx = 2;
+      //an.Nutr = "";
+      //an.NutrInx = 2;
+      //an.Age = 11;
+      //an.Weight = 2;
+      //an.isPois = false;
+      //an.Pois = "";
+      //an.tailLenght = 0;
+      //var ptr = Marshal.AllocHGlobal(Marshal.SizeOf<AnimalStruct>());
+      //Marshal.StructureToPtr(an, ptr, true);
+      //
+      //IgoninForestVM.AddNewAnimal(forest, ptr);
+      //IgoninForestVM.Get(forest, 0, ptr);
+      //
+      //an = (AnimalStruct)Marshal.PtrToStructure(ptr, typeof(AnimalStruct));
+      //;
+      //IgoninForestVM.SetAge(an, 10);
+      //int an_age = IgoninForestVM.GetAge(an);
+      //
+      //string new_name = "Я Узбееееек!!!!";
+      //IgoninForestVM.SetName(an, new_name);
+      //IntPtr ptr = IgoninForestVM.GetName(an);
+      //string an_name = Marshal.PtrToStringAnsi(ptr);
+      //
+      //int color = 1;
+      //IgoninForestVM.SetColor(an, color);
+      //ptr = IgoninForestVM.GetColor(an);
+      //string an_color = Marshal.PtrToStringUni(ptr);
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+
+    private void Button_Click_Load(object sender, RoutedEventArgs e)
     {
-      forest.AddString();
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+        // Настройки окна диалога
+      openFileDialog.Filter = "Все файлы (*.*)|*.*"; // Фильтр для отображения всех типов файлов
+      openFileDialog.Title = "Выберите файл";
+
+      openFileDialog.ShowDialog();
+
+      string filePath = openFileDialog.FileName;
+      if (filePath.Length > 0) {
+        StringBuilder sb = new StringBuilder(filePath);
+
+        forestVM.ClearTable();
+
+        Load(sb);
+        
+        forestVM.Update();
+        
+        //an = (AnimalStruct)Marshal.PtrToStructure(ptr, typeof(AnimalStruct));
+        //forestVM.AddString(filePath);
+
+      }
+
+
     }
-  }
+
+    private void Button_Click_Add(object sender, RoutedEventArgs e)
+    {
+      MessageBoxResult dialogResult = MessageBox.Show("*да - животное\n*нет - рептилия", "Добавление", MessageBoxButton.YesNo);
+      if (dialogResult == MessageBoxResult.Yes) {
+        IgoninDialog dialog = new IgoninDialog(ref forestVM, true, true);
+        dialog.ShowDialog();
+        forestVM.SelectedInx = IgoninForestVM.Count() - 1;
+        forestVM.Update();
+      }
+      else if (dialogResult == MessageBoxResult.No) {
+        IgoninDialog dialog = new IgoninDialog(ref forestVM, false, true);
+        dialog.ShowDialog();
+        forestVM.SelectedInx = IgoninForestVM.Count() - 1;
+        forestVM.Update();
+      }
+      
+    }
+
+    private void Button_Click_Save(object sender, RoutedEventArgs e)
+    {
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+      // Настройки окна диалога
+      openFileDialog.Filter = "Все файлы (*.*)|*.*"; // Фильтр для отображения всех типов файлов
+      openFileDialog.Title = "Выберите файл";
+
+      openFileDialog.ShowDialog();
+
+      string filePath = openFileDialog.FileName;
+      if (filePath.Length > 0) {
+        StringBuilder sb = new StringBuilder(filePath);
+        Save(sb);
+
+        //an = (AnimalStruct)Marshal.PtrToStructure(ptr, typeof(AnimalStruct));
+        //forestVM.AddString(filePath);
+
+      }
+    }
+
+    private void Button_Click_Change(object sender, RoutedEventArgs e)
+    {
+      if (forestVM.IsReptile.Equals(Visibility.Visible)) {
+        IgoninDialog dialog = new IgoninDialog(ref forestVM, false, false);
+        dialog.ShowDialog();
+        forestVM.Update();
+      }
+      else {
+        IgoninDialog dialog = new IgoninDialog(ref forestVM, true, false);
+        dialog.ShowDialog();
+        forestVM.Update();
+      }
+    }
+
+    private void Button_Click_Delete(object sender, RoutedEventArgs e)
+    {
+      forestVM.ClearAtt();
+      IgoninForestVM.Delete(forestVM.SelectedInx);
+      forestVM.SelectedInx = forestVM.SelectedInx == 0 ? 0 : forestVM.SelectedInx > IgoninForestVM.Count() - 1 ? forestVM.SelectedInx - 1 : forestVM.SelectedInx; 
+      forestVM.Update();
+    }
+
+    private void Button_Click_Clear(object sender, RoutedEventArgs e)
+    {
+      forestVM.ClearTable();
+    }
+    }
 }

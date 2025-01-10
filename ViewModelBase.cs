@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Igonin_Lab_6
 {
-  internal class ViewModelBase : INotifyPropertyChanged
+  public class ViewModelBase : INotifyPropertyChanged
   {
     public event PropertyChangedEventHandler? PropertyChanged;
 

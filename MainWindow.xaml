@@ -19,9 +19,11 @@
         <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="Aqua">
             <ToolBar>
                 <Button Content="Сохранить" BorderThickness="2" 
-                        BorderBrush="Gray"/>
+                        BorderBrush="Gray" Click="Button_Click_Save"/>
                 <Button Content="Загрузить" BorderThickness="2" 
-                        BorderBrush="Gray"/>
+                        BorderBrush="Gray" Click="Button_Click_Load"/>
+                <Button Content="Очистить" BorderThickness="2" 
+                        BorderBrush="Gray" Click="Button_Click_Clear"/>
             </ToolBar>
         </Grid>
         
@@ -31,7 +33,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <ListView Grid.Row="0" Margin="10"
-                      ItemsSource="{Binding Strings}" 
+                      ItemsSource="{Binding AnNames}" 
                       SelectedIndex="{Binding SelectedInx}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -45,58 +47,85 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Margin="10, 5, 5, 10"/>
-                <Button Grid.Column="1" Margin="5, 5, 5, 10"/>
-                <Button Grid.Column="2" Margin="5, 5, 10, 10"/>
+                <Button Grid.Column="0" Margin="10, 5, 5, 10"
+                        Content="Добавить" Click="Button_Click_Add"/>
+                <Button Grid.Column="1" Margin="5, 5, 5, 10"
+                        Content="Изменить" Click="Button_Click_Change"/>
+                <Button Grid.Column="2" Margin="5, 5, 10, 10"
+                        Content="Удалить" Click="Button_Click_Delete"/>
             </Grid>
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="1">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
-                    <Label Content="Имя:" FontSize="18"/>
-                    <Label Content="{Binding SelectedAnimalName}"
-                           FontSize="18"
-                           d:Content="Животинка"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
-                    <Label Content="Цвет:" FontSize="18"/>
-                    <Label Content="{Binding SelectedAnimalColor}"
-                           FontSize="18"
-                           d:Content="Черный"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
-                    <Label Content="Тип питания:" FontSize="18"/>
-                    <Label Content="{Binding SelectedAnimalNutrition}"
-                           FontSize="18"
-                           d:Content="Травоядное"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
-                    <Label Content="Возраст:" FontSize="18"/>
-                    <Label Content="{Binding SelectedAnimalAge}"
-                           FontSize="18"
-                           d:Content="12"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
-                    <Label Content="Вес:" FontSize="18"/>
-                    <Label Content="{Binding SelectedAnimalWeight}"
-                           FontSize="18"
-                           d:Content="7"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
-                    <Label Content="Ядовитость:" FontSize="18"/>
-                    <Label Content="{Binding SelectedAnimalPoisonous}"
-                           FontSize="18"
-                           d:Content="Не ядовито"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
-                    <Label Content="Длина хвоста:" FontSize="18"/>
-                    <Label Content="{Binding SelectedAnimalTail}"
-                           FontSize="18"
-                           d:Content="10"/>
-                </StackPanel>
-            </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="18"/>
+                </Style>
+            </Grid.Resources>
+
+            <Label Grid.Row="0" Grid.Column="0" 
+                   Content="Имя:"/>
+            <Label Grid.Row="0" Grid.Column="1" 
+                   Content="{Binding SelectedAnimalName}"
+                   d:Content="Животинка"/>
+
+            <Label Grid.Row="1" Grid.Column="0" 
+                   Content="Цвет:"/>
+            <Label Grid.Row="1" Grid.Column="1" 
+                   Content="{Binding SelectedAnimalColor}"
+                   d:Content="Черный"/>
+
+            <Label Grid.Row="2" Grid.Column="0" 
+                   Content="Тип питания:"/>
+            <Label Grid.Row="2" Grid.Column="1" 
+                   Content="{Binding SelectedAnimalNutrition}"
+                   d:Content="Травоядное"/>
+
+            <Label Grid.Row="3" Grid.Column="0" 
+                   Content="Возраст:"/>
+            <Label Grid.Row="3" Grid.Column="1" 
+                   Content="{Binding SelectedAnimalAge}"
+                   d:Content="12"/>
+
+            <Label Grid.Row="4" Grid.Column="0" 
+                   Content="Вес:"/>
+            <Label Grid.Row="4" Grid.Column="1" 
+                   Content="{Binding SelectedAnimalWeight}"
+                   d:Content="7"/>
+
+            <Label Grid.Row="5" Grid.Column="0" 
+                   Content="Ядовитость:"
+                   Visibility="{Binding IsReptile}"/>
+            <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center"
+                      IsChecked="{Binding SelectedAnimalPoisonous}"
+                      IsEnabled="False"
+                      Visibility="{Binding IsReptile}"/>
+
+            <Label Grid.Row="6" Grid.Column="0" 
+                   Content="Длина хвоста:"
+                   Visibility="{Binding IsReptile}"/>
+            <Label Grid.Row="6" Grid.Column="1" 
+                   Content="{Binding SelectedAnimalTail}"
+                   d:Content="10"
+                   Visibility="{Binding IsReptile}"/>
+
         </Grid>
-        
+
     </Grid>
 </Window>
